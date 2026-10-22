@@ -1,0 +1,74 @@
+---
+# Erlang CI.
+# - Precommit: the same `rebar3 precommit` gate contributors run locally
+#   (fmt-check, compile, xref, hank, dialyzer, ex_doc, ct with cover,
+#   100 % line coverage), on the OTP / rebar3 pinned in `.tool-versions`.
+# - Test: the Common Test suite on every OTP release the package supports.
+name: Erlang
+
+"on":
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - "*"
+  workflow_dispatch: {}
+  merge_group:
+
+concurrency:
+  group: ${{github.workflow}}-${{github.ref}}
+  cancel-in-progress: true
+
+permissions:
+  contents: read
+
+jobs:
+  precommit:
+    name: Precommit
+
+    runs-on: ubuntu-26.04
+
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+
+      - uses: erlef/setup-beam@54075bcc5e249e4758d363f27d099f55d843f124 # v1.24
+        id: setup-beam
+        with:
+          version-type: strict
+          version-file: .tool-versions
+
+      - name: Restore rebar3 cache
+        uses: actions/cache@55cc8345863c7cc4c66a329aec7e433d2d1c52a9 # v6.1.0
+        with:
+          path: |
+            ~/.cache/rebar3
+            _build
+          key: "rebar3-${{ runner.os }}-otp-${{ steps.setup-beam.outputs.otp-version }}-\
+            ${{ hashFiles('rebar.config', 'rebar.lock') }}"
+          restore-keys: |
+            rebar3-${{ runner.os }}-otp-${{ steps.setup-beam.outputs.otp-version }}-
+
+      - name: Precommit
+        run: rebar3 precommit
+
+  test:
+    name: Test (OTP ${{ matrix.otp }})
+
+    runs-on: ubuntu-26.04
+
+    strategy:
+      fail-fast: false
+      matrix:
+        otp: ["27", "28", "29"]
+
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+
+      - uses: erlef/setup-beam@54075bcc5e249e4758d363f27d099f55d843f124 # v1.24
+        with:
+          otp-version: ${{ matrix.otp }}
+          rebar3-version: "3"
+
+      - name: Test
+        run: rebar3 ct
