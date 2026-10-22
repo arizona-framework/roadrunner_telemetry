@@ -1,9 +1,5 @@
 {"1.2.0",
-[{<<"roadrunner">>,
-  {git,"https://github.com/arizona-framework/roadrunner.git",
-       {ref,"c5b0bc2da229d9dfb21aa387bb2e4e4e8eb1bd2e"}},
-  0},
- {<<"telemetry">>,{pkg,<<"telemetry">>,<<"1.4.2">>},0}]}.
+[{<<"telemetry">>,{pkg,<<"telemetry">>,<<"1.4.2">>},0}]}.
 [
 {pkg_hash,[
  {<<"telemetry">>, <<"A0CB522801DFFB1C49FE6E30561BADFFC7B6D0E180DB1300DF759FAA22062855">>}]},

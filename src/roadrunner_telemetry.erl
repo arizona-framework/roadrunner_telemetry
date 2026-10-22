@@ -109,7 +109,7 @@ into `persistent_term`, which makes the lookup much cheaper under load.
 -export([handle_event/2]).
 
 -doc "Emit `Event` as a `telemetry` event. See the module documentation.".
--spec handle_event(roadrunner_event_handler:event(), term()) -> term().
+-spec handle_event(atom(), term()) -> term().
 handle_event(request_start, Req) ->
     StartMono = erlang:monotonic_time(),
     Metadata = (request_metadata(Req))#{telemetry_span_context => make_ref()},
@@ -220,7 +220,7 @@ now_event(Event, Metadata) ->
 
 %% The request fields every request event carries. `client_ip` is only
 %% present when the listener resolved one behind a trusted proxy.
--spec request_metadata(roadrunner_req:request()) -> map().
+-spec request_metadata(map()) -> map().
 request_metadata(
     #{
         request_id := RequestId,

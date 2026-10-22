@@ -10,7 +10,9 @@ reporters, OpenTelemetry, LiveDashboard, and your own handlers can use them.
 
 ## Installation
 
-Add it next to `roadrunner` in your `rebar.config`:
+roadrunner_telemetry works with Roadrunner 0.11 or later. It doesn't pull
+Roadrunner in itself, so it never pins your Roadrunner version: add it next to
+`roadrunner` in your `rebar.config`:
 
 ```erlang
 {deps, [
