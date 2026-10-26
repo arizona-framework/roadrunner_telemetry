@@ -46,7 +46,7 @@ events (such as `opentelemetry_telemetry`) can pair them.
   - Metadata: the start metadata plus `status` and `response_kind`
 - `[roadrunner, request, exception]`
   - Measurements: `duration`, `monotonic_time`
-  - Metadata: the start metadata plus `kind` and `reason`
+  - Metadata: the start metadata plus `kind`, `reason` and `stacktrace`
 - `[roadrunner, request, rejected]`
   - Measurements: `system_time`
   - Metadata: `listener_name`, `peer`, `reason`
@@ -126,12 +126,12 @@ handle_event(request_stop, {{StartMono, Metadata}, Status, Kind}) ->
         #{duration => StopMono - StartMono, monotonic_time => StopMono},
         Metadata#{status => Status, response_kind => Kind}
     );
-handle_event(request_exception, {{StartMono, Metadata}, Class, Reason}) ->
+handle_event(request_exception, {{StartMono, Metadata}, Class, Reason, Stacktrace}) ->
     StopMono = erlang:monotonic_time(),
     telemetry:execute(
         [roadrunner, request, exception],
         #{duration => StopMono - StartMono, monotonic_time => StopMono},
-        Metadata#{kind => Class, reason => Reason}
+        Metadata#{kind => Class, reason => Reason, stacktrace => Stacktrace}
     );
 handle_event(request_rejected, {ListenerName, Peer, Reason}) ->
     now_event([roadrunner, request, rejected], #{
