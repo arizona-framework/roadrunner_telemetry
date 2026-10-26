@@ -92,7 +92,13 @@ request_exception_on_handler_crash(Config) ->
     {ExcM, ExcMd} = event([roadrunner, request, exception]),
     ?assertMatch(#{duration := _, monotonic_time := _}, ExcM),
     ?assertMatch(
-        #{telemetry_span_context := SpanCtx, path := ~"/crash", kind := error, reason := boom},
+        #{
+            telemetry_span_context := SpanCtx,
+            path := ~"/crash",
+            kind := error,
+            reason := boom,
+            stacktrace := [_ | _]
+        },
         ExcMd
     ).
 
