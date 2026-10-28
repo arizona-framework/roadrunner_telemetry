@@ -10,7 +10,7 @@ reporters, OpenTelemetry, LiveDashboard, and your own handlers can use them.
 
 ## Installation
 
-It needs Roadrunner 0.11 or later. Add it next to `roadrunner` in your
+It needs Roadrunner 0.13. Add it next to `roadrunner` in your
 `rebar.config`:
 
 ```erlang
