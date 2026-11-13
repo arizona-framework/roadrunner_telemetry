@@ -14,6 +14,9 @@ the handler to get them as `telemetry` events, and from there into
 [{roadrunner, [{event_handler, roadrunner_telemetry}]}].
 ```
 
+Using Elixir or Gleam? See the [Elixir](elixir.md) and
+[Gleam](gleam.md) guides.
+
 Then attach handlers as usual:
 
 ```erlang

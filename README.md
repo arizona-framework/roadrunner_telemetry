@@ -26,6 +26,9 @@ Make it Roadrunner's event handler in your `sys.config`:
 [{roadrunner, [{event_handler, roadrunner_telemetry}]}].
 ```
 
+Using Elixir or Gleam? See the [Elixir](docs/elixir.md) and
+[Gleam](docs/gleam.md) guides.
+
 ## Usage
 
 Attach `telemetry` handlers as usual:
